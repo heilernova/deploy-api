@@ -1,9 +1,10 @@
 import * as fs from 'node:fs';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as bcrypt from 'bcrypt';
 import * as sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 
@@ -32,6 +33,12 @@ async function bootstrap() {
   }
 
   const app = await NestFactory.create(AppModule);
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  
+  app.enableCors();
+  // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  // app.useGlobalInterceptors(new AppResponseInterceptor());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(process.env.PORT ?? 3000);
   console.log(`[App] running in port ${3000}`);
 }
