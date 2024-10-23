@@ -12,7 +12,7 @@ async function bootstrap() {
     if (!fs.existsSync("./app.db")){
       const sql: string = `
       PRAGMA foreign_keys = ON;
-      CREATE TABLE IF NOT EXISTS users(id TEXT, created_at TEXT, update_at TEXT, role TEXT,  name TEXT, username TEXT,  email TEXT, password TEXT);
+      CREATE TABLE IF NOT EXISTS users(id TEXT, created_at TEXT, update_at TEXT, role TEXT,  name TEXT, email TEXT, password TEXT);
       CREATE TABLE IF NOT EXISTS users_tokens(id TEXT, created_at TEXT, user_id TEXT, type TEXT, hostname TEXT, ip TEXT, device TEXT, platform TEXT, exp TEXT, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);
       CREATE TABLE IF NOT EXISTS apps(id TEXT, created_at TEXT, update_at TEXT, deploy_at TEXT, domain TEXT, name TEXT, process_name TEXT UNIQUE, version TEXT, location TEXT, startup_file TEXT, framework TEXT, running_on TEXT, runtime_environment TEXT, url TEXT, repository TEXT, env TEXT, ignore TEXT, observation TEXT, UNIQUE(domain, name, version));
       CREATE TABLE IF NOT EXISTS apps_log(id TEXT, created_at TEXT, app_id TEXT, user_id TEXT, type TEXT, detail TEXT, data TEXT, FOREIGN KEY (app_id) REFERENCES apps(id), FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);
