@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/common/database';
 import * as bcrypt from 'bcrypt';
+import { isEmail, isUUID } from 'class-validator';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +16,7 @@ export class UsersService {
 
     async get(value: string){
         const con = await this._db.getConnection();
-        let res = await con.get(`select * from users where id = ?`, [value]);
+        let res = await con.get(`select * from users where ${isUUID(value) ? 'id' : 'email'} = ?`, [value]);
         con.close();
         return res;
     }
