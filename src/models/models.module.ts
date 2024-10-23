@@ -1,8 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 import { UsersService } from './users';
+import { TokensService } from './tokens/tokens.service';
 
 const services = [
-    UsersService
+    UsersService,
+    TokensService
 ]
 
 @Global()

@@ -45,7 +45,7 @@ export class UsersService {
 
         Object.entries(values).forEach(entry => {
             if (entry[0] == "password"){
-                entry[1] =  bcrypt.hashSync("admin", 15)
+                entry[1] =  bcrypt.hashSync("admin", 5)
             }
 
             if (entry[0] == "email"){

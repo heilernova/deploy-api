@@ -19,7 +19,7 @@ async function bootstrap() {
       CREATE TABLE IF NOT EXISTS apps_log(id TEXT, created_at TEXT, app_id TEXT, user_id TEXT, type TEXT, detail TEXT, data TEXT, FOREIGN KEY (app_id) REFERENCES apps(id), FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);
       CREATE TABLE IF NOT EXISTS apps_users(app_id TEXT, user_id TEXT, permissions TEXT, FOREIGN KEY (app_id) REFERENCES apps(id), FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE, UNIQUE(app_id, user_id));
       
-      INSERT INTO users VALUES('${crypto.randomUUID()}', '${(new Date()).toISOString()}', '${(new Date()).toISOString()}', 'admin', 'Administrado', 'admin', 'admin@admin.com', '${bcrypt.hashSync("admin", 15)}');
+      INSERT INTO users VALUES('${crypto.randomUUID()}', '${(new Date()).toISOString()}', '${(new Date()).toISOString()}', 'admin', 'Administrado', 'admin', 'admin@admin.com', '${bcrypt.hashSync("admin", 5)}');
       `;
 
       const db = await open({ filename: "./app.db", driver: sqlite3.Database});
@@ -39,7 +39,7 @@ async function bootstrap() {
   // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   // app.useGlobalInterceptors(new AppResponseInterceptor());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(`[App] running in port ${3000}`);
+  await app.listen(process.env.PORT ?? 3001);
+  console.log(`[App] running in port ${3001}`);
 }
 bootstrap();
