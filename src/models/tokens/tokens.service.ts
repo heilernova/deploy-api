@@ -12,13 +12,12 @@ export class TokensService {
 
         
         if (data.type == "web"){
-            let tokens = await conn.all("select * from users_tokens where user_id = ?", [data.userId]);
-            if (tokens.length > 3){
+            let tokens = await conn.all("select * from users_tokens where user_id = ? order by created_at", [data.userId]);
+            if (tokens.length >= 3){
                 let list = tokens.splice(tokens.length - (tokens.length - 3)).map(x => x.id);
-                list.forEach(uuid => {
-                    console.log(uuid);
-                    conn.run("delete from users_tokens where id = ?", [uuid]);
-                })
+                for (let index = 0; index < list.length; index++) {
+                    await conn.run("delete from users_tokens where id = ?", [list[index]]);
+                }
             }
         }
 
@@ -36,5 +35,10 @@ export class TokensService {
         await conn.run("insert into users_tokens values(?, ?, ?, ?, ?, ?, ?, ?, ?)", values);
         conn.close();
         return values[0];
+    }
+
+    async delete(id: string): Promise<void> {
+        const con = await this._db.getConnection();
+        await con.run("delete from users_tokens where id = ?", [id]);
     }
 }
