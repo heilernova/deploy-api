@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import * as sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import { ValidationPipe } from '@nestjs/common';
+import { AllExceptionsFilter } from './config/all-exeptions-filter';
 
 async function bootstrap() {
 
@@ -36,7 +37,7 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   
   app.enableCors();
-  // app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   // app.useGlobalInterceptors(new AppResponseInterceptor());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(process.env.PORT ?? 3001);
