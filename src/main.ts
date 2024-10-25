@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import * as sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import { ValidationPipe } from '@nestjs/common';
-import { AllExceptionsFilter } from './config/all-exeptions-filter';
+import { AllExceptionsFilter } from './config/all-exceptions-filter';
 
 async function bootstrap() {
 
