@@ -16,6 +16,10 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
             ]
         }
 
+        if (exception instanceof HttpException){
+            super.catch(exception, host);
+        }
+        
         if (process.env.NODE_ENV == "development"){
             if (exception instanceof HttpException){
                 let res = exception.getResponse();
@@ -29,6 +33,8 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
                 }
             }
         }
+
+
 
         super.catch(new HttpException(body, body.status_code), host);
     }
