@@ -137,6 +137,20 @@ export class AppsService {
         await conn.run("delete from apps where id = ?", [id]);
         await conn.close();
     }
+
+    public async processNameInUse(name: string): Promise<boolean> {
+        let conn = (await this._db.getConnection());
+        let res = await conn.get<{ res: number }>("select count(process_name) as res from apps where process_name = ?", [name]);
+        await conn.close();
+        return res ? res.res > 0 : false;
+    }
+
+    public async nameInUse(domain: string, name: string){
+        let conn = (await this._db.getConnection());
+        let res = await conn.get<{ res: number }>("select count(*) as res from apps where lower(domain) = lower(?) and lower(name) = lower(?)", [domain, name]);
+        await conn.close();
+        return res ? res.res > 0 : false;
+    }
 }
 
 
